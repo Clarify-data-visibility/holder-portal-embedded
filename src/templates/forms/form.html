@@ -1,4 +1,185 @@
-<link rel="stylesheet" href="./forms/style.css" />
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+
+  #portal-do-titular-form {
+    width: 100%;
+  }
+
+  #form-holder-portal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.9em;
+    color: #000000;
+  }
+
+  #form-holder-portal .input {
+    border-radius: 3px;
+    padding: 0.6rem;
+    border-width: 1px;
+    resize: none;
+  }
+
+  #form-holder-portal .input-check {
+    -ms-transform: scale(1.5); /* IE */
+    -moz-transform: scale(1.5); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(1.5); /* Opera */
+    transform: scale(1.5);
+    margin: 0 10px;
+  }
+
+  #form-holder-portal .btn {
+    padding: 12px 15px;
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+    background-color: #2a6078;
+    border-color: #2a6078;
+    border-width: 0px;
+    cursor: pointer;
+  }
+
+  #form-holder-portal .validate-email {
+    display: none;
+    color: red;
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-bottom: 5px;
+  }
+
+  #form-holder-portal .container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #form-holder-portal .text-area {
+    resize: none;
+  }
+
+  #form-holder-portal .label {
+    font-weight: 700;
+  }
+
+  #form-holder-portal .type {
+    margin-bottom: 10px;
+  }
+
+  #form-holder-portal .mandatory {
+    color: red;
+  }
+
+  .alert_item {
+    display: flex;
+    align-items: center;
+    padding: 25px 30px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+  }
+
+  .alert_item .data {
+    margin: 0 30px;
+  }
+  .alert_item .data .title {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  .alert_item .data span {
+    font-weight: 700;
+  }
+  .alert_item .data .sub {
+    font-size: 14px;
+    font-weight: 100;
+  }
+  .alert_item .icon {
+    font-size: 30px;
+  }
+  .alert_item .close {
+    cursor: pointer;
+  }
+
+  .alert_item.alert_info .close:hover {
+    color: #a5c7d8;
+  }
+
+  .alert_item.alert_warning .close:hover {
+    color: #dcd4a2;
+  }
+
+  .alert_item.alert_error .close:hover {
+    color: #c79995;
+  }
+
+  .alert_item.alert_success .close:hover {
+    color: #adc5a5;
+  }
+
+  .active {
+    visibility: visible;
+  }
+  .active .alert_item {
+    top: 50%;
+  }
+
+  .btn_grp {
+    display: flex;
+  }
+
+  .btn_grp .btn {
+    width: 225px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background: #fff;
+    margin: 0 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 14px;
+  }
+
+  .btn_grp .btn.btn_info,
+  .alert_item.alert_info {
+    background: #cde8f5;
+    color: #4480ae;
+  }
+
+  .btn_grp .btn.btn_warning,
+  .alert_item.alert_warning {
+    background: #f8f3d6;
+    color: #967132;
+  }
+
+  .btn_grp .btn.btn_error,
+  .alert_item.alert_error {
+    background: #ecc8c5;
+    color: #b32f2d;
+  }
+
+  .btn_grp .btn.btn_success,
+  .alert_item.alert_success {
+    background: #def2d6;
+    color: #5a7052;
+  }
+
+  .btn_grp .btn.btn_info:hover {
+    background: #a5c7d8;
+  }
+
+  .btn_grp .btn.btn_warning:hover {
+    background: #dcd4a2;
+  }
+
+  .btn_grp .btn.btn_error:hover {
+    background: #c79995;
+  }
+
+  .btn_grp .btn.btn_success:hover {
+    background: #adc5a5;
+  }
+</style>
 <form id="form-holder-portal">
   <div class="container" id="form-container">
     <label for="name" class="label"
@@ -15,9 +196,9 @@
       required
     />
 
-    <label for="email" class="label"
-      ><span class="mandatory">* </span>E-mail</label
-    >
+    <label for="email" class="label">
+      <span class="mandatory">* </span>E-mail
+    </label>
     <input
       type="text"
       oninput="maskEmail(this)"
@@ -31,30 +212,11 @@
       ><span class="mandatory">* </span> Selecione o tipo de solicitação</label
     >
     <div class="checkbox">
-      <input
-        class="input-check"
-        type="checkbox"
-        name="revoke_data"
-        id="revoke_data"
-        checked
-      />
-      <span> Revogar dados </span>
-      <input
-        class="input-check"
-        type="checkbox"
-        name="simple_query"
-        id="simple_query"
-      />
-      <span> Consulta simples</span>
+      <select id="request_type">
+        <option value="1">Revogar dados</option>
+        <option value="2">Consulta simples</option>
+      </select>
     </div>
-
-    <label for="observation" class="label">Observação</label>
-    <textarea
-      class="input text-area"
-      name="observation"
-      rows="5"
-      cols="50"
-    ></textarea>
 
     <div id="google_recaptcha"></div>
 

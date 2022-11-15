@@ -1,9 +1,9 @@
 class Form {
-  constructor(name, cpf, email, observation) {
+  constructor(name, cpf, email, type) {
     this.name = name;
     this.cpf = cpf;
     this.email = email;
-    this.observation = observation;
+    this.type = type;
   }
 
   validateForm() {
@@ -106,20 +106,21 @@ function sendForm() {
       document.forms["form-holder-portal"]["name"].value,
       document.forms["form-holder-portal"]["cpf"].value,
       document.forms["form-holder-portal"]["email"].value,
-      document.forms["form-holder-portal"]["observation"].value
+      document.forms["form-holder-portal"]["request_type"].value
     );
 
     let validateCPF = form.validateCPF(form.cpf);
     let validateEmail = form.validateEmail(form.email);
     if (!form.name || !validateCPF || !validateEmail) return;
 
-    fetch("http://127.0.0.1:3333/api/fake", {
+    fetch("http://localhost:3333/requests", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: form.name,
         cpf: form.cpf,
         email: form.email,
+        type: form.type,
       }),
     })
       .then((res) => {
