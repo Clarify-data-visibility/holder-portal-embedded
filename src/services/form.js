@@ -184,6 +184,25 @@ function sendForm() {
     });
 }
 
+function sendFormContact() {
+  fetch("#", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: document.forms["form-contact"]["name"].value,
+      cpf: document.forms["form-contact"]["cpf"].value,
+      email: document.forms["form-contact"]["email"].value,
+      phone: document.forms["form-contact"]["phone"].value,
+    }),
+  })
+    .then((res) => {
+      alert("Request complete! response:", res);
+    })
+    .catch((err) => {
+      alert(err);
+    });
+}
+
 function closeModal() {
   let form_container = document.getElementById("form-container");
   let alert_container = document.getElementById("alert-container");

@@ -212,22 +212,22 @@
         <div class="container">
           <div class="row">
             <div class="col-md-10 offset-md-1">
-              <form id="request" class="main_form">
+              <form id="form-contact" class="main_form" method="post">
                 <div class="row">
                   <div class="col-md-6 col-sm-6">
                     <input
                       class="contactus"
-                      placeholder="Name"
+                      placeholder="Nome"
                       type="type"
-                      name="Name"
+                      name="name"
                     />
                   </div>
                   <div class="col-md-6 col-sm-6">
                     <input
                       class="contactus"
-                      placeholder="Phone Number"
+                      placeholder="Telefone"
                       type="type"
-                      name="Phone Number"
+                      name="phone"
                     />
                   </div>
                   <div class="col-md-6 col-sm-6">
@@ -235,27 +235,25 @@
                       class="contactus"
                       placeholder="Email"
                       type="type"
-                      name="Email"
+                      name="email"
                     />
                   </div>
                   <div class="col-md-6 col-sm-6">
                     <input
                       class="contactus"
-                      placeholder="Address"
+                      placeholder="CPF"
                       type="type"
-                      name="Address"
+                      name="cpf"
                     />
                   </div>
                   <div class="col-md-12">
-                    <input
-                      class="contactusmess"
-                      placeholder="Message"
-                      type="type"
-                      Message="Name"
-                    />
-                  </div>
-                  <div class="col-md-12">
-                    <button class="send_btn">Send</button>
+                    <button
+                      class="send_btn"
+                      type="button"
+                      onclick="sendFormContact()"
+                    >
+                      Enviar
+                    </button>
                   </div>
                 </div>
               </form>
@@ -342,5 +340,6 @@
     <!-- sidebar -->
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/custom.js"></script>
+    <script src="../src/services/form.js"></script>
   </body>
 </html>
