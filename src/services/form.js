@@ -185,7 +185,7 @@ function sendForm() {
 }
 
 function sendFormContact() {
-  fetch("#", {
+  fetch("http://localhost:3003/contacts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

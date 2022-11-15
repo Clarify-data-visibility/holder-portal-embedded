@@ -1,7 +1,10 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 app.use(express.json());
+
+app.use(cors());
 
 const knex = require("knex")({
   client: "mysql2",
@@ -18,7 +21,7 @@ app.get("/", (req, res) => {
   return res.send("hello world");
 });
 
-app.post("/contact", async (req, res) => {
+app.post("/contacts", async (req, res) => {
   console.log(req.body);
 
   const { name, email, phone, cpf } = req.body;
@@ -28,4 +31,4 @@ app.post("/contact", async (req, res) => {
   return res.send({ name, email, phone, cpf });
 });
 
-app.listen(3001);
+app.listen(3003);
