@@ -1,3 +1,63 @@
+const errorTemplate = `<div class="error">
+<div class="alert_item alert_error">
+  <div class="icon data_icon">
+    <i class="fas fa-bomb"></i>
+  </div>
+  <div class="data">
+    <p class="title">
+      <span>Erro:</span>
+      Não foi possível realizar solicitação.
+    </p>
+    <p class="sub">Por favor, tente novamente.</p>
+  </div>
+  <div class="icon close" onclick="closeModal()">
+    <i class="fas fa-times"></i>
+  </div>
+</div>
+</div>
+`;
+
+const loadingTemplate = `
+<div class="loading">
+  <div class="alert_item alert_info">
+    <div class="icon data_icon">
+      <i class="fas fa-info-circle"></i>
+    </div>
+    <div class="data">
+      <p class="title">
+        <span>Carregando:</span>
+        Solicitação está sendo processada
+      </p>
+      <p class="sub">Por favor, aguarde...</p>
+    </div>
+    <div class="icon close" onclick="closeModal()">
+      <i class="fas fa-times"></i>
+    </div>
+  </div>
+</div>
+
+`;
+
+const successTemplate = `
+<div class="success">
+  <div class="alert_item alert_success">
+    <div class="icon data_icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <div class="data">
+      <p class="title">
+        <span>Sucesso:</span>
+        Solicitação enviada com sucesso
+      </p>
+      <p class="sub">Muito bom! Sua solicitação já está armazenada.</p>
+    </div>
+    <div class="icon close" onclick="closeModal()">
+      <i class="fas fa-times"></i>
+    </div>
+  </div>
+</div>
+`;
+
 class Form {
   constructor(name, cpf, email, type) {
     this.name = name;
@@ -61,33 +121,26 @@ class Form {
 }
 
 function loadHTML(tipo) {
+  let template;
+
   switch (tipo) {
     case "Error":
-      fetch("./alerts/error.html")
-        .then((response) => response.text())
-        .then(
-          (text) =>
-            (document.getElementById("alert-container").innerHTML = text)
-        );
+      template = errorTemplate;
       break;
 
     case "Sucess":
-      fetch("./alerts/sucess.html")
-        .then((response) => response.text())
-        .then(
-          (text) =>
-            (document.getElementById("alert-container").innerHTML = text)
-        );
+      template = successTemplate;
       break;
 
     case "Loading":
-      return fetch("./alerts/loading.html")
-        .then((response) => response.text())
-        .then(
-          (text) =>
-            (document.getElementById("alert-container").innerHTML = text)
-        );
+      template = loadingTemplate;
+      break;
+
+    default:
+      throw new Error("Unknow template");
   }
+
+  document.getElementById("alert-container").innerHTML = template;
 }
 
 function sendForm() {
@@ -98,42 +151,37 @@ function sendForm() {
     document.getElementById("alert-container").style.display = "flex";
   }
 
-  let htmlLoading = loadHTML("Loading");
-  htmlLoading.then((value) => {
-    let loading = document.getElementsByClassName("loading")[0];
-    console.log(loading);
-    let form = new Form(
-      document.forms["form-holder-portal"]["name"].value,
-      document.forms["form-holder-portal"]["cpf"].value,
-      document.forms["form-holder-portal"]["email"].value,
-      document.forms["form-holder-portal"]["request_type"].value
-    );
+  loadHTML("Loading");
 
-    let validateCPF = form.validateCPF(form.cpf);
-    let validateEmail = form.validateEmail(form.email);
-    if (!form.name || !validateCPF || !validateEmail) return;
+  let loading = document.getElementsByClassName("loading")[0];
+  console.log(loading);
+  let form = new Form(
+    document.forms["form-holder-portal"]["name"].value,
+    document.forms["form-holder-portal"]["cpf"].value,
+    document.forms["form-holder-portal"]["email"].value,
+    document.forms["form-holder-portal"]["request_type"].value
+  );
 
-    fetch("http://localhost:3333/requests", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: form.name,
-        cpf: form.cpf,
-        email: form.email,
-        type: form.type,
-      }),
+  fetch("http://localhost:3333/requests", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: form.name,
+      cpf: form.cpf,
+      email: form.email,
+      type: form.type,
+    }),
+  })
+    .then((res) => {
+      loading.style.display = "none";
+      loadHTML("Sucess");
+      console.log("Request complete! response:", res);
     })
-      .then((res) => {
-        loading.style.display = "none";
-        loadHTML("Sucess");
-        console.log("Request complete! response:", res);
-      })
-      .catch((err) => {
-        loading.style.display = "none";
-        loadHTML("Error");
-        console.log(err);
-      });
-  });
+    .catch((err) => {
+      loading.style.display = "none";
+      loadHTML("Error");
+      console.log(err);
+    });
 }
 
 function closeModal() {
