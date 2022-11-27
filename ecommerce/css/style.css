@@ -329,6 +329,7 @@ ul.social_icon li a:hover {
 
 .open .label::after {
   content: "▲";
+  display: none;
 }
 
 .label::after {
@@ -338,6 +339,7 @@ ul.social_icon li a:hover {
   right: -18px;
   top: 0;
   padding: 0px 24px;
+  display: none;
 }
 
 .se_fonr1 {
